@@ -32,7 +32,7 @@ UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:sel
 
 手势识别的第一步就是确定响应链。那么，什么是响应链呢？响应链是指，从你点击到的 view ，一直找其 superview ，直到根视图（通常是 UIWindow ），这个视图链我们称为响应链。举个例子:
 
-![avatar](https://coding.net/u/joeyxu/p/Resources/git/raw/master/ResponseChain.png)
+![](https://coding.net/u/joeyxu/p/Resources/git/raw/master/ResponseChain.png)
 
 红色的这个视图链，就是我们希望找到的响应链。之所以我们称其为响应链，是因为触摸事件将最终在这个视图链中得到处理。
 
@@ -118,7 +118,7 @@ Hit Test 是 Apple 设计的用于寻找响应链的工具。其实现如下：
 
 在确认可响应的手势后，系统会倒叙遍历寻找最终得到响应的手势。在同一个视图中，后添加的手势优先响应。
 
-![avatar](https://coding.net/u/joeyxu/p/Resources/git/raw/master/DecideGesture.png)
+![](https://raw.githubusercontent.com/Joeyqiushi/UIGesture-VS-UIControl-CN/master/Resource/DecideGesture.png)
 
 如上图所示，假设我们在 ViewA 上添加了手势 gesture0 ， ViewB 上依次添加了手势 gesture1 和 gesture2 ， ViewC 上添加了 gesture3 。现在我们知道了响应链，也确认可响应的手势有 gesture0 ， gesture1 ， gesture2 ， gesture3 ，那么最终响应的手势就是 gesture3 。如果确认可响应的手势只有 gesture0 ， gesture1 ， gesture2 ，没有 gesture3 ，那么 gesture2 会得到响应。若没有 gesture2 ，那么 gesture1 得到响应。这样依次往前找到最终响应的手势。另外，在找到最终响应的手势后，若有任意一个 `[gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:]` 回调中指定另外的手势可同时响应，并且另外的这些手势也属于可响应手势，那么这些手势会同时响应。
 

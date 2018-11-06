@@ -138,6 +138,8 @@ Hit Test 是 Apple 设计的用于寻找响应链的工具。其实现如下：
 
 事实上 UIGesture 和 UIControl 的触摸响应机制是完全独立的两套。设置 `delaysTouchesBegan` 为 true 只会挂起 UIControl 的触摸响应事件，即 `[touchesBegan:withEvent:]` 被暂时挂起不被调用。但响应链中 UIGesture 的触摸事件的处理不会受到影响。若设置 `delaysTouchesBegan` 为 false ，那么 `[touchesBegan:withEvent:]` 会在 UIGesture 触摸识别完成后，在 `[gestureRecognizerShouldBegin:]` 之前被调用。所以当 `delaysTouchesBegan` 为 false 时， UIButton 在 `[touchesBegan:withEvent:]` 阶段就变成了高亮状态，尽管 UIGesture 最终被识别时 cancel 掉了所有的 UIControl 的触摸事件，也就是说最终 UIButton 的点击事件实际上是不会响应的。我想苹果设计 `delaysTouchesBegan` 这个属性应该是为了处理 UIGesture 和 UIControl 的兼容问题。所以尽管 `delaysTouchesBegan` 在某种程度上算是一种手势依赖，但我却把它放在了 UIControl 部分。因为它只会影响 UIControl 的 touch 事件，对 UIGesture 没有影响。
 
+另外，从类结构上，我们也可以看到： UIGestureRecognizer 继承自 NSObject ，而 UIControl 继承自 UIView 。这是两个毫无关联的类， `[touchesBegan:withEvent:]` 这一类方法也只是针对 UIControl 调用，和 UIGesture 毫无关系。
+
 虽然 UIGesture 和 UIControl 有两套完全不同的 touch 处理机制，但其第一步确认响应链的过程是共享的。它们都通过 HitTest 来确认响应链。
 
 除此之外，在触摸响应事件的处理中， UIGesture 比 UIControl 的优先级更高。为什么这么说呢？因为在响应链中只要有一个 UIGesture 拿到响应权，所有的 UIControl 的触摸事件都会被 cancel 掉，哪怕这个 UIControl 所处的视图层级比 UIGesture 的视图更高。简单点说， UIGesture 有权在其响应时中止 UIControl 的识别流程。

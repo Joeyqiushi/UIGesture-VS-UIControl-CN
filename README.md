@@ -32,7 +32,7 @@ UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:sel
 
 手势识别的第一步就是确定响应链。那么，什么是响应链呢？响应链是指，从你点击到的 view ，一直找其 superview ，直到根视图（通常是 UIWindow ），这个视图链我们称为响应链。举个例子:
 
-![](https://coding.net/u/joeyxu/p/Resources/git/raw/master/ResponseChain.png)
+![](https://raw.githubusercontent.com/Joeyqiushi/UIGesture-VS-UIControl-CN/master/Resource/ResponseChain.png)
 
 红色的这个视图链，就是我们希望找到的响应链。之所以我们称其为响应链，是因为触摸事件将最终在这个视图链中得到处理。
 
